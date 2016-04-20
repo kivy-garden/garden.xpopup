@@ -1,11 +1,12 @@
+from os.path import expanduser
 from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
 from xbase import ButtonEx
 from notification import XNotification, XConfirmation, XError, XMessage, XProgress
 from form import XSlider, XTextInput, XNotes, XAuthorization
+from file import XFileOpen, XFileSave, XFolder
 
 __author__ = 'ophermit'
-
-from kivy.uix.boxlayout import BoxLayout
 
 
 class XPopupDemo(BoxLayout):
@@ -13,32 +14,38 @@ class XPopupDemo(BoxLayout):
         super(XPopupDemo, self).__init__(padding=20, spacing=15, orientation='vertical', **kwargs)
 
         pnl1 = BoxLayout(spacing=15)
-        pnl1.add_widget(ButtonEx(id='msgbox', text='MessageBox demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='confirm', text='Confirmation demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='error', text='ErrorBox demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='progress', text='Progress demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='msgbox', text='XMessage demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='confirm', text='XConfirmation demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='error', text='XError demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='progress', text='XProgress demo', on_release=self._on_click))
         self.add_widget(pnl1)
 
         pnl1 = BoxLayout(spacing=15)
-        pnl1.add_widget(ButtonEx(id='input', text='TextInput demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='notes', text='Notes demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='slider', text='Slider demo', on_release=self._on_click))
-        pnl1.add_widget(ButtonEx(id='login', text='Authorization demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='input', text='XTextInput demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='notes', text='XNotes demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='slider', text='XSlider demo', on_release=self._on_click))
+        pnl1.add_widget(ButtonEx(id='login', text='XAuthorization demo', on_release=self._on_click))
+        self.add_widget(pnl1)
+
+        pnl1 = BoxLayout(spacing=15)
+        pnl1.add_widget(ButtonEx(text='XOpenFile demo', on_release=self._open_dialog_demo))
+        pnl1.add_widget(ButtonEx(text='XSaveFile demo', on_release=self._save_dialog_demo))
+        pnl1.add_widget(ButtonEx(text='XFolder demo', on_release=self._folder_dialog_demo))
         self.add_widget(pnl1)
 
     def _on_click(self, instance):
         s_id = instance.id
         if s_id == 'msgbox':
-            XMessage(text='This is message box with only one button', title='This is title')
+            XMessage(text='It could be your Ad', title='XMessage demo')
         elif s_id == 'error':
-            XError(text='This is error box!')
+            XError(text='Don`t panic! Its just the XError demo.')
         elif s_id == 'confirm':
             XConfirmation(text='Do you see a confirmation?', on_dismiss=self._callback)
         elif s_id == 'progress':
             self._o_popup = XProgress(title='PopupProgress demo', text='Processing...', max=200)
             Clock.schedule_once(self._progress_test, .1)
         elif s_id == 'input':
-            XTextInput(title='Enter text', text='I\'m a text', on_dismiss=self._callback)
+            XTextInput(title='Edit text', text='I\'m a text', on_dismiss=self._callback)
         elif s_id == 'notes':
             XNotes(title='Edit notes', text='Text\nToo many text...\nYet another row.', on_dismiss=self._callback)
         elif s_id == 'slider':
@@ -53,7 +60,7 @@ class XPopupDemo(BoxLayout):
         if instance.is_canceled():
             return
 
-        s_message = 'BUTTON: %s\n\n' % instance.button_pressed
+        s_message = 'Pressed button: %s\n\n' % instance.button_pressed
 
         try:
             values = instance.values
@@ -63,7 +70,7 @@ class XPopupDemo(BoxLayout):
             pass
 
         XNotification(text=s_message, show_time=3, size_hint=(0.8, 0.4),
-                      title='Callback reporting ( will disappear after 3 seconds ):')
+                      title='Results of the popup ( will disappear after 3 seconds ):')
 
     def _progress_test(self, pdt=None):
         if self._o_popup.is_canceled():
@@ -100,11 +107,28 @@ class XPopupDemo(BoxLayout):
             instance.value = .5
             return True
 
+    def _filepopup_callback(self, instance):
+            if instance.is_canceled():
+                return
+            s = 'Path: %s' % instance.path
+            if instance.__class__.__name__ == 'XFileSave':
+                s += ('\nFilename: %s\nFull name: %s' % (instance.filename, instance.get_full_name()))
+            else:
+                s += ('\nSelection: %s' % instance.selection)
+            XNotification(title='Pressed button: ' + instance.button_pressed, text=s, show_time=5)
+
+    def _open_dialog_demo(self, instance):
+        XFileOpen(on_dismiss=self._filepopup_callback, path=expanduser(u'~'), multiselect=True)
+
+    def _save_dialog_demo(self, instance):
+        XFileSave(on_dismiss=self._filepopup_callback, path=expanduser(u'~'))
+
+    def _folder_dialog_demo(self, instance):
+        XFolder(on_dismiss=self._filepopup_callback, path=expanduser(u'~'))
+
+
 if __name__ == '__main__':
-    from kivy.app import App
-
-    class DemoApp(App):
-        def build(self):
-            return XPopupDemo()
-
-    DemoApp().run()
+    import kivy
+    kivy.require('1.9.1')
+    from kivy.base import runTouchApp
+    runTouchApp(XPopupDemo())

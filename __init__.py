@@ -17,6 +17,8 @@ Modules:
 
 * form.py: contains classes of the UI-forms
 
+* file.py: contains classes of the popup for file system browsing
+
 * demo_app.py: contains demo application widget
 
 * main.py, android.txt - files for `Kivy Launcher` on android
@@ -25,9 +27,10 @@ Modules:
 
 from notification import XNotification, XConfirmation, XMessage, XError, XProgress, XNotifyBase
 from form import XSlider, XTextInput, XNotes, XAuthorization, XForm
+from file import XFileOpen, XFileSave, XFolder, XFilePopup
 from xbase import XBase
 from xpopup import XPopup
 
 __author__ = 'ophermit'
 
-__version__ = '0.1'
+__version__ = '0.2'

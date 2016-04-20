@@ -1,33 +1,71 @@
 # xpopup
 Kivy (http://kivy.org) extensions
 
-Usefull extensions of the `kivy.uix.popup.Popup` class. Includes the demo app (for all features).
+Usefull extensions of the `kivy.uix.popup.Popup` class.
 
 
 Features
 ========
 
-* XPopup - allows to limit minimum size of the popup and fit popup to the app's window.
+* `XPopup` - extension for the :class:`~kivy.uix.popup.Popup`. Implements methods
+  for limiting minimum size of the popup and fit popup to the app's window.
+  For more information, see `xpopup.py`.
 
-* XBase - supports an easy way to add a set of buttons to the popup.
+* `XBase` - subclass of `XPopup`, the base class for all popup extensions.
+  Supports an easy way to add a set of buttons to the popup. Use it to create
+  your own popup extensions. For more information, see `xbase.py`.
 
-* XNotification - the notification window that closes automatically after a time limit.
+* `XNotifyBase` - the base class for notifications. Implements the popup with a
+  label. Use it to create your own notifications. For more information, see
+  `notification.py`. Subclasses: 
 
-* XMessage, XError, XConfirmation - templates for often used notifications.
+    - `XNotification` - a popup that closes automatically after a time limit.
 
-* XProgress - the popup with progress bar.
+    - `XMessage`, `XError`, `XConfirmation` - templates for often used notifications.
 
-* XForm - a simple basis for the UI-forms creation.
+    - `XProgress` - a popup with progress bar.
 
-* XSlider - the popup with slider.
+* `XForm` - a simple basis for the UI-forms creation. For more information,
+  see `form.py`. Subclasses:
 
-* XTextInput, XNotes - popups for the simple text edit.
+    - `XSlider` - a popup with a slider.
 
-* XAuthorization - a simple authorization form.
+    - `XTextInput` - a popup for editing singleline text.
+    
+    - `XNotes` - a popup for editing multiline text.
+
+    - `XAuthorization` - a simple authorization form.
+
+* `XFilePopup` - a popup for file system browsing. For more information,
+  see `file.py`. Subclasses:
+
+    - `XFileOpen` - a popup for selecting the files.
+    
+    - `XFileSave` - a popup for saving file. 
+    
+    - `XFolder` - a popup for selecting the folders.
+
+
+Demo
+====
+
+To see a demonstration, you need to perform one of the following: 
+
+* Install `Kivy` library (https://kivy.org/#download) and execute `demo_app.py`
+
+* Install `Kivy Launcher` on your Android device and copy this package by following these instructions:
+  https://kivy.org/docs/guide/packaging-android.html#packaging-your-application-for-the-kivy-launcher
+  (files `main.py` and `android.txt` already in package)
+  
+* Just watch the video: https://youtu.be/UX8gCyEg2J8
 
 
 Version history
 ===============
+
+* 0.2
+    Added XFilePopup, XFileOpen, XFileSave, XFolder (classes of the popup for file system browsing).
+    Some minor changes.
 
 * 0.1
     Initial release

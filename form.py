@@ -142,7 +142,7 @@ from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 try:
-    from ..xtools.tools import XLabel as LabelEx
+    from ..xtools.tools_ui import XLabel as LabelEx
 except:
     from kivy.uix.label import Label as LabelEx
 from xbase import XBase

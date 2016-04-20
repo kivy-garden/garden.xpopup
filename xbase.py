@@ -52,7 +52,7 @@ from kivy.properties import BooleanProperty, ListProperty, StringProperty, Numer
 from kivy.uix.boxlayout import BoxLayout
 from xpopup import XPopup
 try:
-    from ..xtools.tools import XButton as ButtonEx
+    from ..xtools.tools_ui import XButton as ButtonEx
 except:
     from kivy.uix.button import Button as ButtonEx
 

@@ -11,7 +11,7 @@ Classes:
 
 * XMessage: Notification with predefined button set (['Ok'])
 
-* XError: XMessage with predefined title ('Error')
+* XError: XMessage with predefined title
 
 * XConfirmation: Notification with predefined button set (['Yes', 'No'])
 
@@ -127,7 +127,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.progressbar import ProgressBar
 from xbase import XBase
 try:
-    from ..xtools.tools import XLabel as LabelEx
+    from ..xtools.tools_ui import XLabel as LabelEx
 except:
     from kivy.uix.label import Label as LabelEx
 
@@ -185,7 +185,7 @@ class XError(XMessage):
     """XErrorBox class. See module documentation for more information.
     """
 
-    title = StringProperty('ERROR!')
+    title = StringProperty('Something went wrong...')
     '''Default title for class
     '''
 
