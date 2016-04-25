@@ -110,3 +110,6 @@ $RECYCLE.BIN/
 
 # IDEA project settings
 .idea/
+
+# Pre-commit check scripts
+pre-commit.py

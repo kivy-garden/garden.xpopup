@@ -48,7 +48,8 @@ use :meth:`XBase.is_canceled` to check if it was pressed::
 """
 
 from kivy import metrics
-from kivy.properties import BooleanProperty, ListProperty, StringProperty, NumericProperty
+from kivy.properties import BooleanProperty, ListProperty, StringProperty,\
+    NumericProperty
 from kivy.uix.boxlayout import BoxLayout
 from xpopup import XPopup
 try:
@@ -144,7 +145,8 @@ class XBase(XPopup):
 
         self._pnl_buttons.height = metrics.dp(30)
         for button in buttons:
-            self._pnl_buttons.add_widget(ButtonEx(text=button, id=button, on_release=self._on_click))
+            self._pnl_buttons.add_widget(
+                ButtonEx(text=button, id=button, on_release=self._on_click))
 
     def is_canceled(self):
         """Check the `cancel` event

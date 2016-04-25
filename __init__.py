@@ -11,7 +11,8 @@ Modules:
 
 * xpopup.py: extension for the :class:`~kivy.uix.popup.Popup`
 
-* xbase.py: contains the base class for all the xpopup classes (based on xpopup)
+* xbase.py: contains the base class for all the xpopup classes (based on
+  xpopup)
 
 * notification.py: contains classes of the pop-up notifications
 
@@ -25,7 +26,8 @@ Modules:
 
 """
 
-from notification import XNotification, XConfirmation, XMessage, XError, XProgress, XNotifyBase
+from notification import XNotification, XConfirmation, XMessage, XError,\
+    XProgress, XNotifyBase
 from form import XSlider, XTextInput, XNotes, XAuthorization, XForm
 from file import XFileOpen, XFileSave, XFolder, XFilePopup
 from xbase import XBase

@@ -97,7 +97,8 @@ with the specified default text::
     def my_callback(instance):
         print('Your answer: ' + str(instance.get_value()))
 
-    popup = XTextInput(title='What`s your mood?', text='I`m in the excellent mood!',
+    popup = XTextInput(title='What`s your mood?',
+                       text='I`m in the excellent mood!',
                        on_dismiss=my_callback)
 
 NOTE: Pressing "Enter" key will simulate pressing "OK" on the popup. Valid for
@@ -133,7 +134,8 @@ To obtain the specific value, use following ids:
 
 
 from kivy import metrics
-from kivy.properties import NumericProperty, StringProperty, BooleanProperty, ListProperty, OptionProperty, DictProperty
+from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
+    ListProperty, OptionProperty, DictProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.checkbox import CheckBox
@@ -183,7 +185,8 @@ class XForm(XBase):
             if widget.id is not None:
                 if isinstance(widget, TextInput):
                     v_t = widget.text
-                elif isinstance(widget, Switch) or isinstance(widget, CheckBox):
+                elif isinstance(widget, Switch)\
+                        or isinstance(widget, CheckBox):
                     v_t = widget.active
                 elif isinstance(widget, Slider):
                     v_t = widget.value
@@ -227,12 +230,14 @@ class XSlider(XForm):
     min = NumericProperty(0.)
     max = NumericProperty(1.)
     value = NumericProperty(.5)
-    orientation = OptionProperty('horizontal', options=('vertical', 'horizontal'))
+    orientation = OptionProperty(
+        'horizontal', options=('vertical', 'horizontal'))
     '''Properties that are binded to the same slider properties.
     '''
 
     def _get_form(self):
-        slider = Slider(id='value', min=self.min, max=self.max, value=self.value, orientation=self.orientation)
+        slider = Slider(id='value', min=self.min, max=self.max,
+                        value=self.value, orientation=self.orientation)
         slider.bind(value=self.setter('value'))
         bind = self.bind
         bind(min=slider.setter('min'))
@@ -261,9 +266,11 @@ class XTextInput(XForm):
 
     def _get_form(self):
         layout = BoxLayout(orientation='vertical', spacing=5)
-        text_input = TextInput(id='text', multiline=False, text=self.text, on_text_validate=self._on_text_validate,
+        text_input = TextInput(id='text', multiline=False, text=self.text,
+                               on_text_validate=self._on_text_validate,
                                # DON`T UNCOMMENT OR FOUND AND FIX THE ISSUE
-                               # if `focus` set to `True` - TextInput will be inactive to edit
+                               # if `focus` set to `True` - TextInput will be
+                               # inactive to edit
                                # focus=True,
                                size_hint_y=None, height=metrics.dp(33))
         layout.add_widget(Widget())
@@ -337,17 +344,22 @@ class XAuthorization(XForm):
         layout.add_widget(Widget())
 
         pnl = BoxLayout(size_hint_y=None, height=metrics.dp(28), spacing=5)
-        pnl.add_widget(LabelEx(text='Login:', halign='right', size_hint_x=None, width=metrics.dp(80)))
-        pnl.add_widget(TextInput(id='login', multiline=False, font_size=metrics.sp(14), text=self.login))
+        pnl.add_widget(LabelEx(text='Login:', halign='right', size_hint_x=None,
+                               width=metrics.dp(80)))
+        pnl.add_widget(TextInput(id='login', multiline=False,
+                                 font_size=metrics.sp(14), text=self.login))
         layout.add_widget(pnl)
 
         pnl = BoxLayout(size_hint_y=None, height=metrics.dp(28), spacing=5)
-        pnl.add_widget(LabelEx(text='Password:', halign='right', size_hint_x=None, width=metrics.dp(80)))
-        pnl.add_widget(TextInput(id='password', multiline=False, font_size=14, password=True, text=self.password))
+        pnl.add_widget(LabelEx(text='Password:', halign='right',
+                               size_hint_x=None, width=metrics.dp(80)))
+        pnl.add_widget(TextInput(id='password', multiline=False, font_size=14,
+                                 password=True, text=self.password))
         layout.add_widget(pnl)
 
         pnl = BoxLayout(size_hint_y=None, height=metrics.dp(28), spacing=5)
-        pnl.add_widget(CheckBox(id='autologin', size_hint_x=None, width=metrics.dp(80), active=self.autologin))
+        pnl.add_widget(CheckBox(id='autologin', size_hint_x=None,
+                                width=metrics.dp(80), active=self.autologin))
         pnl.add_widget(LabelEx(text='Login automatically', halign='left'))
         layout.add_widget(pnl)
 

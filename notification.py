@@ -122,7 +122,8 @@ after 2 seconds::
 """
 
 from kivy.clock import Clock
-from kivy.properties import ListProperty, StringProperty, NumericProperty, BoundedNumericProperty
+from kivy.properties import ListProperty, StringProperty, NumericProperty,\
+    BoundedNumericProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.progressbar import ProgressBar
 from xbase import XBase

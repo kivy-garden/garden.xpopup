@@ -13,9 +13,9 @@ IMPORTANT:
 ----------
 * Normalization is applied once (when using the :meth:`XPopup.open`)
 
-* The first normalization is performed on the minimum size, and then - fit to app's
-  window. In this case, if the specified minimum size is greater than the size of the
-  app's window - it will be ignored.
+* The first normalization is performed on the minimum size, and then - fit to
+  app's window. In this case, if the specified minimum size is greater than the
+  size of the app's window - it will be ignored.
 
 
 Examples
@@ -25,17 +25,18 @@ This example creates a simple popup with specified minimum size::
     popup = XPopup(size_hint=(.4, .3), min_width=400, min_height=300)
     popup.open()
 
-If actual size of popup less than minimum size, :attr:`size_hint` will be normalized.
-For example: assume the size of app window is 500x500, in this case popup will had
-size 200x150. But we set a minimum size, so :attr:`size_hint` for this popup will
-be recalculated and set to (.8, .6)
+If actual size of popup less than minimum size, :attr:`size_hint` will be
+normalized. For example: assume the size of app window is 500x500, in this case
+popup will had size 200x150. But we set a minimum size, so :attr:`size_hint`
+for this popup will be recalculated and set to (.8, .6)
 
  By default, if you set the popup size in pixels, which will exceed the size
 of the app window, the popup will go out of app's window bounds.
-If you don't want that, you can set :attr:`fit_to_window` to True (popup will be
-normalized to the size of the app window)::
+If you don't want that, you can set :attr:`fit_to_window` to True (popup will
+be normalized to the size of the app window)::
 
-    popup = XPopup(size=(1000, 1000), size_hint=(None, None), fit_to_window=True)
+    popup = XPopup(size=(1000, 1000), size_hint=(None, None),
+                   fit_to_window=True)
     popup.open()
 """
 
@@ -64,8 +65,8 @@ class XPopup(Popup):
     '''
 
     fit_to_window = BooleanProperty(False)
-    '''This property determines if the pop-up larger than app window is automatically
-    fit to app window.
+    '''This property determines if the pop-up larger than app window is
+    automatically fit to app window.
 
     :attr:`fit_to_window` is a :class:`~kivy.properties.BooleanProperty` and
     defaults to False.
@@ -101,14 +102,17 @@ class XPopup(Popup):
         win_size = self.get_root_window().size[:]
         popup_size = self.size[:]
 
-        norm_x = self._norm_value(popup_size[0], self.size_hint_x, self.min_width, win_size[0])
-        norm_y = self._norm_value(popup_size[1], self.size_hint_y, self.min_height, win_size[1])
+        norm_x = self._norm_value(popup_size[0], self.size_hint_x,
+                                  self.min_width, win_size[0])
+        norm_y = self._norm_value(popup_size[1], self.size_hint_y,
+                                  self.min_height, win_size[1])
         self.width = norm_x[0]
         self.height = norm_y[0]
         self.size_hint = (norm_x[1], norm_y[1])
 
         # DON`T REMOVE OR FOUND AND FIX THE ISSUE
-        # if `size_hint` is not specified we need to recalculate position of the popup
+        # if `size_hint` is not specified we need to recalculate position
+        # of the popup
         if (norm_x[1], norm_y[1]) == (None, None) and self.size != popup_size:
             self.property('size').dispatch(self)
 

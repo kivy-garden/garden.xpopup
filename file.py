@@ -114,8 +114,8 @@ Following example shows how to use properties::
 """
 
 from kivy import metrics
-from kivy.properties import StringProperty, NumericProperty, ListProperty, OptionProperty, BooleanProperty, \
-    ObjectProperty
+from kivy.properties import StringProperty, NumericProperty, ListProperty,\
+    OptionProperty, BooleanProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
@@ -173,7 +173,8 @@ class XFilePopup(XBase):
     CTRL_VIEW_LIST = 'list'
     CTRL_NEW_FOLDER = 'new_folder'
 
-    view_mode = OptionProperty(CTRL_VIEW_ICON, options=(CTRL_VIEW_ICON, CTRL_VIEW_LIST))
+    view_mode = OptionProperty(
+        CTRL_VIEW_ICON, options=(CTRL_VIEW_ICON, CTRL_VIEW_LIST))
     '''Binded to :attr:`~kivy.uix.filechooser.FileChooser.view_mode`
     '''
 
@@ -189,11 +190,14 @@ class XFilePopup(XBase):
         self.browser.path = self.path
         self.browser.multiselect = self.multiselect
         self.browser.dirselect = self.dirselect
-        self.browser.bind(path=self.setter('path'), selection=self.setter('selection'))
-        self.bind(view_mode=self.browser.setter('view_mode'), multiselect=self.browser.setter('multiselect'),
+        self.browser.bind(path=self.setter('path'),
+                          selection=self.setter('selection'))
+        self.bind(view_mode=self.browser.setter('view_mode'),
+                  multiselect=self.browser.setter('multiselect'),
                   dirselect=self.browser.setter('dirselect'))
 
-        lbl_path = LabelEx(text=self.browser.path, valign='top', halign='left', size_hint_y=None, height=metrics.dp(25))
+        lbl_path = LabelEx(text=self.browser.path, valign='top', halign='left',
+                           size_hint_y=None, height=metrics.dp(25))
         self.browser.bind(path=lbl_path.setter('text'))
 
         layout = BoxLayout(orientation='vertical')
@@ -204,19 +208,24 @@ class XFilePopup(XBase):
 
     def _ctrls_init(self):
         pnl_controls = BoxLayout(size_hint_y=None, height=metrics.dp(25))
-        pnl_controls.add_widget(Button(text='Icons', id=self.CTRL_VIEW_ICON, size_hint_x=None, width=metrics.dp(50),
-                                       on_release=self._ctrls_click))
-        pnl_controls.add_widget(Button(text='List', id=self.CTRL_VIEW_LIST, size_hint_x=None, width=metrics.dp(50),
-                                       on_release=self._ctrls_click))
-        pnl_controls.add_widget(Button(text='New folder', id=self.CTRL_NEW_FOLDER,
-                                       size_hint_x=None, width=metrics.dp(90), on_release=self._ctrls_click))
+        pnl_controls.add_widget(
+            Button(text='Icons', id=self.CTRL_VIEW_ICON, size_hint_x=None,
+                   width=metrics.dp(50), on_release=self._ctrls_click))
+        pnl_controls.add_widget(
+            Button(text='List', id=self.CTRL_VIEW_LIST, size_hint_x=None,
+                   width=metrics.dp(50), on_release=self._ctrls_click))
+        pnl_controls.add_widget(
+            Button(text='New folder', id=self.CTRL_NEW_FOLDER,
+                   size_hint_x=None, width=metrics.dp(90),
+                   on_release=self._ctrls_click))
         return pnl_controls
 
     def _ctrls_click(self, instance):
         if instance.id in self.property('view_mode').options:
             self.view_mode = instance.id
         elif instance.id == self.CTRL_NEW_FOLDER:
-            XTextInput(title='Input folder name', text='New folder', on_dismiss=self._create_dir)
+            XTextInput(title='Input folder name', text='New folder',
+                       on_dismiss=self._create_dir)
 
     def _create_dir(self, instance):
         """Callback for create a new folder.
@@ -225,7 +234,8 @@ class XFilePopup(XBase):
             return
         new_folder = self.path + path.sep + instance.get_value()
         if path.exists(new_folder):
-            XError(text='Folder "%s" is already exist. Maybe you should enter another name?' % instance.get_value())
+            XError(text='Folder "%s" is already exist. Maybe you should enter'
+                        'another name?' % instance.get_value())
             return True
         makedirs(new_folder)
         self.browser.property('path').dispatch(self.browser)
@@ -270,7 +280,8 @@ class XFileSave(XFilePopup):
     '''
 
     def _get_body(self):
-        txt = TextInput(id='filename', text=self.filename, multiline=False, size_hint_y=None, height=metrics.dp(30))
+        txt = TextInput(id='filename', text=self.filename, multiline=False,
+                        size_hint_y=None, height=metrics.dp(30))
         txt.bind(text=self.setter('filename'))
         self.bind(filename=txt.setter('text'))
 
