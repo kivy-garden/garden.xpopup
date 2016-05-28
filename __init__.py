@@ -35,4 +35,4 @@ from xpopup import XPopup
 
 __author__ = 'ophermit'
 
-__version__ = '0.2'
+__version__ = '0.2.1'

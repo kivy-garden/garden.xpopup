@@ -9,13 +9,12 @@ to the app's window.
  By default, the minimum size is not set. It can be changed via setting value
 of an appropriate properties (see documentation below).
 
-IMPORTANT:
-----------
-* Normalization is applied once (when using the :meth:`XPopup.open`)
+.. warning::
+    * Normalization is applied once (when using the :meth:`XPopup.open`)
 
-* The first normalization is performed on the minimum size, and then - fit to
-  app's window. In this case, if the specified minimum size is greater than the
-  size of the app's window - it will be ignored.
+    * The first normalization is performed on the minimum size, and then - fit
+      to app's window. In this case, if the specified minimum size is greater
+      than the size of the app's window - it will be ignored.
 
 
 Examples

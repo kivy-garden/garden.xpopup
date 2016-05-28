@@ -39,8 +39,9 @@ Or that way::
         text = StringProperty('What can i do for you?')
     popup = MyNotification()
 
-NOTE: :class:`XMessage` and :class:`XError` classes were created in a similar
-manner. Actually, it is just a subclasses with predefined default values.
+.. note:: :class:`XMessage` and :class:`XError` classes were created in a
+    similar manner. Actually, it is just a subclasses with predefined default
+    values.
 
 Similarly for the :class:`XConfirmation` class. The difference - it has
 :meth:`XConfirmation.is_confirmed` which checks which button has been
@@ -52,6 +53,11 @@ pressed::
         else:
             print('You are disagree')
     popup = XConfirmation(text='Do you agree?', on_dismiss=my_callback)
+
+.. versionadded:: 0.2.1
+    :attr:`XNotifyBase.dont_show_value`
+    :attr:`XNotifyBase.dont_show_text`
+    See documentation below.
 
 
 XNotification class
@@ -119,12 +125,27 @@ after 2 seconds::
     popup = XProgress(value=50)
     # complete the progress
     popup.complete()
+
+.. versionadded:: 0.2.1
+    You can change the text and time-to-close using following parameters::
+
+        popup.complete(text='', show_time=0)
+
+    In that case, the popup will be closed immediately.
+
+.. versionadded:: 0.2.1
+    :meth:`XProgress.autoprogress` starts infinite progress increase in the
+    separate thread i.e. you don't need to increase it manually. Will be
+    stopped automatically when the :meth:`XProgress.complete` or
+    :meth:`XProgress.dismiss` is called.
 """
+from kivy import metrics
 
 from kivy.clock import Clock
 from kivy.properties import ListProperty, StringProperty, NumericProperty,\
-    BoundedNumericProperty
+    BoundedNumericProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.progressbar import ProgressBar
 from xbase import XBase
 try:
@@ -146,13 +167,47 @@ class XNotifyBase(XBase):
     ''.
     '''
 
+    dont_show_text = StringProperty('Do not show this message again')
+    '''Use this property if you want to use custom text instead of
+    'Do not show this message'.
+
+    :attr:`text` is a :class:`~kivy.properties.StringProperty`.
+    '''
+
+    dont_show_value = BooleanProperty(None, allownone=True)
+    '''This property represents a state of checkbox 'Do not show this message'.
+    To enable checkbox, set this property to True or False.
+
+    .. versionadded:: 0.2.1
+
+    :attr:`dont_show_value` is a :class:`~kivy.properties.BooleanProperty` and
+    defaults to None.
+    '''
+
     def __init__(self, **kwargs):
-        self._ui_lbl = LabelEx(text=self.text)
-        self.bind(text=self._ui_lbl.setter('text'))
+        self._message = LabelEx(text=self.text)
+        self.bind(text=self._message.setter('text'))
         super(XNotifyBase, self).__init__(**kwargs)
 
     def _get_body(self):
-        return self._ui_lbl
+        if self.dont_show_value is None:
+            return self._message
+        else:
+            pnl = BoxLayout(orientation='vertical')
+            pnl.add_widget(self._message)
+
+            pnl_cbx = BoxLayout(
+                size_hint_y=None, height=metrics.dp(35), spacing=5)
+            cbx = CheckBox(
+                active=self.dont_show_value, size_hint_x=None,
+                width=metrics.dp(50))
+            cbx.bind(active=self.setter('dont_show_value'))
+            pnl_cbx.add_widget(cbx)
+            pnl_cbx.add_widget(
+                LabelEx(text=self.dont_show_text, halign='left'))
+
+            pnl.add_widget(pnl_cbx)
+            return pnl
 
 
 class XNotification(XNotifyBase):
@@ -225,31 +280,41 @@ class XProgress(XNotifyBase):
     '''
 
     def __init__(self, **kwargs):
-        self._o_progress = ProgressBar(max=self.max, value=self.value)
-        self.bind(max=self._o_progress.setter('max'))
-        self.bind(value=self._o_progress.setter('value'))
+        self._complete = False
+        self._progress = ProgressBar(max=self.max, value=self.value)
+        self.bind(max=self._progress.setter('max'))
+        self.bind(value=self._progress.setter('value'))
         super(XProgress, self).__init__(**kwargs)
 
     def _get_body(self):
         layout = BoxLayout(orientation='vertical')
         layout.add_widget(super(XProgress, self)._get_body())
-        layout.add_widget(self._o_progress)
+        layout.add_widget(self._progress)
         return layout
 
-    def complete(self):
-        """Sets the progress to 100%, hides the button(s) and automatically
-        closes the popup
+    def complete(self, text='Complete', show_time=2):
         """
+        Sets the progress to 100%, hides the button(s) and automatically
+        closes the popup.
+
+        .. versionchanged:: 0.2.1
+        Added parameters 'text' and 'show_time'
+
+        :param text: text instead of 'Complete', optional
+        :param show_time: time-to-close (in seconds), optional
+        """
+        self._complete = True
         n = self.max
         self.value = n
-        self.text = 'Complete!'
+        self.text = text
         self.buttons = []
-        Clock.schedule_once(self.dismiss, 2)
+        Clock.schedule_once(self.dismiss, show_time)
 
     def inc(self, pn_delta=1):
-        """Increase current progress by specified number of units.
-        If the result value exceeds the maximum value, this method is
-        "looping" the progress
+        """
+        Increase current progress by specified number of units.
+         If the result value exceeds the maximum value, this method is
+         "looping" the progress
 
         :param pn_delta: number of units
         """
@@ -257,3 +322,13 @@ class XProgress(XNotifyBase):
         if self.value > self.max:
             # create "loop"
             self.value = self.value % self.max
+
+    def autoprogress(self, pdt=None):
+        """
+        .. versionadded:: 0.2.1
+
+        Starts infinite progress increase in the separate thread
+        """
+        if self._window and not self._complete:
+            self.inc()
+            Clock.schedule_once(self.autoprogress, .01)

@@ -62,10 +62,23 @@ To see a demonstration, you need to perform one of the following:
 
 Version history
 ===============
+* 0.2.1
+    
+    XNotifyBase - added checkbox 'Do not show this message again'
+    
+    XProgress.complete() now takes optional parameters: text (for custom
+    message) and show_time (for custom time-to-close)
+    
+    XProgress.autoprogress() - new method which starting infinite progress
+    increase in the separate thread
 
 * 0.2
-    Added XFilePopup, XFileOpen, XFileSave, XFolder (classes of the popup for file system browsing).
+    
+    Added XFilePopup, XFileOpen, XFileSave, XFolder (classes of the popup for
+    file system browsing).
+    
     Some minor changes.
 
 * 0.1
+    
     Initial release
