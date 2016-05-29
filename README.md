@@ -62,6 +62,10 @@ To see a demonstration, you need to perform one of the following:
 
 Version history
 ===============
+* 0.2.2
+    
+    Added support for python 3.x
+
 * 0.2.1
     
     XNotifyBase - added checkbox 'Do not show this message again'

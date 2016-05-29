@@ -26,13 +26,21 @@ Modules:
 
 """
 
-from notification import XNotification, XConfirmation, XMessage, XError,\
-    XProgress, XNotifyBase
-from form import XSlider, XTextInput, XNotes, XAuthorization, XForm
-from file import XFileOpen, XFileSave, XFolder, XFilePopup
-from xbase import XBase
-from xpopup import XPopup
+try:
+    from .notification import XNotification, XConfirmation, XMessage, XError,\
+        XProgress, XNotifyBase
+    from .form import XSlider, XTextInput, XNotes, XAuthorization, XForm
+    from .file import XFileOpen, XFileSave, XFolder, XFilePopup
+    from .xbase import XBase
+    from .xpopup import XPopup
+except:
+    from notification import XNotification, XConfirmation, XMessage, XError,\
+        XProgress, XNotifyBase
+    from form import XSlider, XTextInput, XNotes, XAuthorization, XForm
+    from file import XFileOpen, XFileSave, XFolder, XFilePopup
+    from xbase import XBase
+    from xpopup import XPopup
 
 __author__ = 'ophermit'
 
-__version__ = '0.2.1'
+__version__ = '0.2.2'

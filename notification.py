@@ -139,15 +139,18 @@ after 2 seconds::
     stopped automatically when the :meth:`XProgress.complete` or
     :meth:`XProgress.dismiss` is called.
 """
-from kivy import metrics
 
+from kivy import metrics
 from kivy.clock import Clock
 from kivy.properties import ListProperty, StringProperty, NumericProperty,\
     BoundedNumericProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.progressbar import ProgressBar
-from xbase import XBase
+try:
+    from .xbase import XBase
+except:
+    from xbase import XBase
 try:
     from ..xtools.tools_ui import XLabel as LabelEx
 except:

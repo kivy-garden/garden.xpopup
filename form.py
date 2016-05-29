@@ -132,7 +132,6 @@ To obtain the specific value, use following ids:
 
 """
 
-
 from kivy import metrics
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty, OptionProperty, DictProperty
@@ -144,10 +143,13 @@ from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 try:
+    from .xbase import XBase
+except:
+    from xbase import XBase
+try:
     from ..xtools.tools_ui import XLabel as LabelEx
 except:
     from kivy.uix.label import Label as LabelEx
-from xbase import XBase
 
 __author__ = 'ophermit'
 

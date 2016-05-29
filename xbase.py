@@ -51,7 +51,10 @@ from kivy import metrics
 from kivy.properties import BooleanProperty, ListProperty, StringProperty,\
     NumericProperty
 from kivy.uix.boxlayout import BoxLayout
-from xpopup import XPopup
+try:
+    from .xpopup import XPopup
+except:
+    from xpopup import XPopup
 try:
     from ..xtools.tools_ui import XButton as ButtonEx
 except:

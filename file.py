@@ -122,9 +122,14 @@ from kivy.uix.textinput import TextInput
 
 from os import path, makedirs
 
-from xbase import XBase
-from notification import XError
-from form import XTextInput
+try:
+    from .xbase import XBase
+    from .notification import XError
+    from .form import XTextInput
+except:
+    from xbase import XBase
+    from notification import XError
+    from form import XTextInput
 try:
     from ..xtools import XLabel as LabelEx
 except:
