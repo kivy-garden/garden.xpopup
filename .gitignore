@@ -111,5 +111,8 @@ $RECYCLE.BIN/
 # IDEA project settings
 .idea/
 
-# Pre-commit check scripts
+# etc
 pre-commit.py
+*.bat
+/.TODO
+/.ha*
