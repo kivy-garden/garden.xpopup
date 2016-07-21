@@ -63,17 +63,19 @@ class XPopupDemo(BoxLayout):
             XTextInput(title='Edit text', text='I\'m a text',
                        on_dismiss=self._callback)
         elif s_id == 'notes':
-            XNotes(title='Edit notes', on_dismiss=self._callback,
-                   text='Text\nToo many text...\nYet another row.')
+            XNotes(title='Edit notes', on_dismiss=self._callback_notes,
+                   lines=['Text', 'Too many text...', 'Yet another row.'])
         elif s_id == 'slider':
             self._o_popup = XSlider(
-                min=.4, max=.9, value=.5, title='Slider test',
-                size_hint=(.6, .5),
+                min=.4, max=.9, value=.5, size_hint=(.6, .5),
+                title_template='Slider test, Value: %0.2f',
                 buttons=['Horizontal', 'Vertical', 'Close'],
                 on_change=self._slider_value, on_dismiss=self._slider_click)
         elif s_id == 'login':
-            XAuthorization(on_dismiss=self._callback, login='login',
-                           password='password')
+            XAuthorization(
+                on_dismiss=self._callback, login='login',
+                required_fields={'login': 'Login', 'password': 'Password'},
+                password='password')
 
     @staticmethod
     def _callback(instance):
@@ -92,6 +94,18 @@ class XPopupDemo(BoxLayout):
         XNotification(
             text=s_message, show_time=3, size_hint=(0.8, 0.4),
             title='Results of the popup ( will disappear after 3 seconds ):')
+
+    @staticmethod
+    def _callback_notes(instance):
+        if instance.is_canceled():
+            return
+
+        s_message = 'Pressed button: %s\n\n' % instance.button_pressed
+        s_message += str(instance.lines)
+
+        XNotification(
+            text=s_message, show_time=3, size_hint=(0.8, 0.4),
+            title='XNotes demo ( will disappear after 3 seconds ):')
 
     def _progress_test(self, pdt=None):
         if self._o_popup.is_canceled():

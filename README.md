@@ -62,6 +62,22 @@ To see a demonstration, you need to perform one of the following:
 
 Version history
 ===============
+Version 0.3.0 will be available in Sept 2016
+
+* 0.2.3
+
+    <b>XForm.required_fields</b> - new property, list of required fields
+
+    <b>XNotes.lines</b> - new property, default text for the TextInput as list
+    of strings
+        
+    <b>XSlider.title_template</b> - new property, formatted string for display
+    the slider's value in the title.
+        
+    XAuthorization.autologin - now supports 'None' (to hide checkbox)
+    
+    XForm.get_value() - fixed bug (exception in Python 3.x)
+
 * 0.2.2
     
     Added support for python 3.x
@@ -73,12 +89,12 @@ Version history
     XProgress.complete() now takes optional parameters: text (for custom
     message) and show_time (for custom time-to-close)
     
-    XProgress.autoprogress() - new method which starting infinite progress
+    <b>XProgress.autoprogress()</b> - new method which starting infinite progress
     increase in the separate thread
 
 * 0.2
     
-    Added XFilePopup, XFileOpen, XFileSave, XFolder (classes of the popup for
+    Added <b>XFilePopup, XFileOpen, XFileSave, XFolder</b> (classes of the popup for
     file system browsing).
     
     Some minor changes.
