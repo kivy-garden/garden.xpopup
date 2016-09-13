@@ -164,6 +164,7 @@ To obtain the specific value, use following ids:
 """
 
 from kivy import metrics
+from kivy.factory import Factory
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty, OptionProperty, DictProperty
 from kivy.uix.boxlayout import BoxLayout
@@ -174,15 +175,13 @@ from kivy.uix.switch import Switch
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 try:
+    from .tools import gettext_ as _
     from .xbase import XBase
     from .notification import XError
 except:
+    from tools import gettext_ as _
     from xbase import XBase
     from notification import XError
-try:
-    from ..xtools.tools_ui import XLabel as LabelEx
-except:
-    from kivy.uix.label import Label as LabelEx
 
 __author__ = 'ophermit'
 
@@ -253,9 +252,8 @@ class XForm(XBase):
                     self.values[t_id] = t_value
 
             if required_errors:
-                t = 'Following fields are required:\n%s' %\
-                    ', '.join(required_errors)
-                XError(text=t)
+                XError(text=_('Following fields are required:\n') +
+                       ', '.join(required_errors))
                 return
 
         super(XForm, self)._on_click(instance)
@@ -408,7 +406,7 @@ class XNotes(XForm):
 class XAuthorization(XForm):
     """XAuthorization class. See module documentation for more information.
     """
-    BUTTON_LOGIN = 'Login'
+    BUTTON_LOGIN = _('Login')
 
     login = StringProperty(u'')
     '''This property represents default text in the `login` TextInput.
@@ -438,7 +436,7 @@ class XAuthorization(XForm):
     defaults to False.
     '''
 
-    title = StringProperty('Authorization')
+    title = StringProperty(_('Authorization'))
     '''Default title for the popup
     '''
 
@@ -458,15 +456,17 @@ class XAuthorization(XForm):
         layout.add_widget(Widget())
 
         pnl = BoxLayout(size_hint_y=None, height=metrics.dp(28), spacing=5)
-        pnl.add_widget(LabelEx(text='Login:', halign='right', size_hint_x=None,
-                               width=metrics.dp(80)))
+        pnl.add_widget(
+            Factory.XLabel(text=_('Login:'), halign='right',
+                           size_hint_x=None, width=metrics.dp(80)))
         pnl.add_widget(TextInput(id='login', multiline=False,
                                  font_size=metrics.sp(14), text=self.login))
         layout.add_widget(pnl)
 
         pnl = BoxLayout(size_hint_y=None, height=metrics.dp(28), spacing=5)
-        pnl.add_widget(LabelEx(text='Password:', halign='right',
-                               size_hint_x=None, width=metrics.dp(80)))
+        pnl.add_widget(
+            Factory.XLabel(text=_('Password:'), halign='right',
+                           size_hint_x=None, width=metrics.dp(80)))
         pnl.add_widget(TextInput(id='password', multiline=False, font_size=14,
                                  password=True, text=self.password))
         layout.add_widget(pnl)
@@ -476,7 +476,8 @@ class XAuthorization(XForm):
             pnl.add_widget(CheckBox(
                 id='autologin', size_hint_x=None, width=metrics.dp(80),
                 active=self.autologin))
-            pnl.add_widget(LabelEx(text='Login automatically', halign='left'))
+            pnl.add_widget(
+                Factory.XLabel(text=_('Login automatically'), halign='left'))
             layout.add_widget(pnl)
 
         layout.add_widget(Widget())

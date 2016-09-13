@@ -24,6 +24,8 @@ Features
     - `XMessage`, `XError`, `XConfirmation` - templates for often used notifications.
 
     - `XProgress` - a popup with progress bar.
+    
+    - `XLoading` - a popup with a gif image.
 
 * `XForm` - a simple basis for the UI-forms creation. For more information,
   see `form.py`. Subclasses:
@@ -62,7 +64,15 @@ To see a demonstration, you need to perform one of the following:
 
 Version history
 ===============
-Version 0.3.0 will be available in Sept 2016
+Version 0.4.0 will be available in Dec 2016
+
+* 0.3.0
+
+    Added support for localization. For more information, see `tools.py`.
+    
+    Added support for custom labels and buttons. For more information, see `tools.py`.
+
+    Added <b>XLoading</b> - shows a 'loading.gif' in the popup
 
 * 0.2.3
 

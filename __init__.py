@@ -20,22 +20,30 @@ Modules:
 
 * file.py: contains classes of the popup for file system browsing
 
+* tools.py: functions for configure xpopup
+
 * demo_app.py: contains demo application widget
 
 * main.py, android.txt - files for `Kivy Launcher` on android
 
+* xpopup.pot - localization template
+
+* xpopup_ru.mo - russian language localization file
+
 """
 
 try:
+    from .tools import configure
     from .notification import XNotification, XConfirmation, XMessage, XError,\
-        XProgress, XNotifyBase
+        XProgress, XNotifyBase, XLoading
     from .form import XSlider, XTextInput, XNotes, XAuthorization, XForm
     from .file import XFileOpen, XFileSave, XFolder, XFilePopup
     from .xbase import XBase
     from .xpopup import XPopup
 except:
+    from tools import configure
     from notification import XNotification, XConfirmation, XMessage, XError,\
-        XProgress, XNotifyBase
+        XProgress, XNotifyBase, XLoading
     from form import XSlider, XTextInput, XNotes, XAuthorization, XForm
     from file import XFileOpen, XFileSave, XFolder, XFilePopup
     from xbase import XBase
@@ -43,4 +51,4 @@ except:
 
 __author__ = 'ophermit'
 
-__version__ = '0.2.2'
+__version__ = '0.3.0'

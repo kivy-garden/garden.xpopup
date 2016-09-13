@@ -138,23 +138,39 @@ after 2 seconds::
     separate thread i.e. you don't need to increase it manually. Will be
     stopped automatically when the :meth:`XProgress.complete` or
     :meth:`XProgress.dismiss` is called.
+
+
+XLoading class
+===============
+
+.. versionadded:: 0.3.0
+
+Subclass of :class:`xpopup.XBase`.
+Shows a 'loading.gif' in the popup.
+
+Following example will create a `XLoading` object using custom title and
+image::
+
+    popup = XLoading(title='Your_title', gif='/your_path_to/loading.gif')
+
 """
 
-from kivy import metrics
+from os.path import join
+from kivy import metrics, kivy_data_dir
 from kivy.clock import Clock
+from kivy.factory import Factory
 from kivy.properties import ListProperty, StringProperty, NumericProperty,\
     BoundedNumericProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.checkbox import CheckBox
+from kivy.uix.image import Image
 from kivy.uix.progressbar import ProgressBar
 try:
+    from .tools import gettext_ as _
     from .xbase import XBase
 except:
+    from tools import gettext_ as _
     from xbase import XBase
-try:
-    from ..xtools.tools_ui import XLabel as LabelEx
-except:
-    from kivy.uix.label import Label as LabelEx
 
 __author__ = 'ophermit'
 
@@ -170,7 +186,7 @@ class XNotifyBase(XBase):
     ''.
     '''
 
-    dont_show_text = StringProperty('Do not show this message again')
+    dont_show_text = StringProperty(_('Do not show this message again'))
     '''Use this property if you want to use custom text instead of
     'Do not show this message'.
 
@@ -188,7 +204,7 @@ class XNotifyBase(XBase):
     '''
 
     def __init__(self, **kwargs):
-        self._message = LabelEx(text=self.text)
+        self._message = Factory.XLabel(text=self.text)
         self.bind(text=self._message.setter('text'))
         super(XNotifyBase, self).__init__(**kwargs)
 
@@ -207,7 +223,7 @@ class XNotifyBase(XBase):
             cbx.bind(active=self.setter('dont_show_value'))
             pnl_cbx.add_widget(cbx)
             pnl_cbx.add_widget(
-                LabelEx(text=self.dont_show_text, halign='left'))
+                Factory.XLabel(text=self.dont_show_text, halign='left'))
 
             pnl.add_widget(pnl_cbx)
             return pnl
@@ -244,7 +260,7 @@ class XError(XMessage):
     """XErrorBox class. See module documentation for more information.
     """
 
-    title = StringProperty('Something went wrong...')
+    title = StringProperty(_('Something went wrong...'))
     '''Default title for class
     '''
 
@@ -257,7 +273,7 @@ class XConfirmation(XNotifyBase):
     '''Default button set for class
     '''
 
-    title = StringProperty('Confirmation')
+    title = StringProperty(_('Confirmation'))
     '''Default title for class
     '''
 
@@ -295,7 +311,7 @@ class XProgress(XNotifyBase):
         layout.add_widget(self._progress)
         return layout
 
-    def complete(self, text='Complete', show_time=2):
+    def complete(self, text=_('Complete'), show_time=2):
         """
         Sets the progress to 100%, hides the button(s) and automatically
         closes the popup.
@@ -335,3 +351,27 @@ class XProgress(XNotifyBase):
         if self._window and not self._complete:
             self.inc()
             Clock.schedule_once(self.autoprogress, .01)
+
+
+class XLoading(XBase):
+    """XLoading class. See module documentation for more information.
+
+    .. versionadded:: 0.3.0
+    """
+    gif = StringProperty(join(kivy_data_dir, 'images', 'image-loading.gif'))
+    '''Represents a path to an image.
+    '''
+
+    title = StringProperty(_('Loading...'))
+    '''Default title for class
+    '''
+
+    size_hint_x = NumericProperty(None, allownone=True)
+    size_hint_y = NumericProperty(None, allownone=True)
+    width = NumericProperty(metrics.dp(350))
+    height = NumericProperty(metrics.dp(200))
+    '''Default size properties for the popup
+    '''
+
+    def _get_body(self):
+        return Image(source=self.gif, anim_delay=.1)

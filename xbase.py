@@ -48,17 +48,16 @@ use :meth:`XBase.is_canceled` to check if it was pressed::
 """
 
 from kivy import metrics
+from kivy.factory import Factory
 from kivy.properties import BooleanProperty, ListProperty, StringProperty,\
     NumericProperty
 from kivy.uix.boxlayout import BoxLayout
 try:
+    from .tools import gettext_ as _
     from .xpopup import XPopup
 except:
+    from tools import gettext_ as _
     from xpopup import XPopup
-try:
-    from ..xtools.tools_ui import XButton as ButtonEx
-except:
-    from kivy.uix.button import Button as ButtonEx
 
 __author__ = 'ophermit'
 
@@ -101,11 +100,11 @@ class XBase(XPopup):
     '''Overrides properties from :class:`XPopup`
     '''
 
-    BUTTON_OK = 'OK'
-    BUTTON_CANCEL = 'Cancel'
-    BUTTON_YES = 'Yes'
-    BUTTON_NO = 'No'
-    BUTTON_CLOSE = 'Close'
+    BUTTON_OK = _('Ok')
+    BUTTON_CANCEL = _('Cancel')
+    BUTTON_YES = _('Yes')
+    BUTTON_NO = _('No')
+    BUTTON_CLOSE = _('Close')
     '''Basic button names
     '''
 
@@ -149,7 +148,8 @@ class XBase(XPopup):
         self._pnl_buttons.height = metrics.dp(30)
         for button in buttons:
             self._pnl_buttons.add_widget(
-                ButtonEx(text=button, id=button, on_release=self._on_click))
+                Factory.XButton(
+                    text=button, id=button, on_release=self._on_click))
 
     def is_canceled(self):
         """Check the `cancel` event
