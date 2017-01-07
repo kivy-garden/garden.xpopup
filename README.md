@@ -64,7 +64,6 @@ To see a demonstration, you need to perform one of the following:
 
 Version history
 ===============
-Version 0.4.0 will be available in Dec 2016
 
 * 0.3.0
 
