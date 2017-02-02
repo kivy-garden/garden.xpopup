@@ -172,6 +172,10 @@ class XFilePopup(XBase):
     '''Binded to :attr:`~kivy.uix.filechooser.FileChooser.dirselect`
     '''
 
+    filters = ListProperty()
+    '''Binded to :attr:`~kivy.uix.filechooser.FileChooser.filters`
+    '''
+
     CTRL_VIEW_ICON = 'icon'
     CTRL_VIEW_LIST = 'list'
     CTRL_NEW_FOLDER = 'new_folder'
@@ -193,11 +197,13 @@ class XFilePopup(XBase):
         self.browser.path = self.path
         self.browser.multiselect = self.multiselect
         self.browser.dirselect = self.dirselect
+        self.browser.filters = self.filters
         self.browser.bind(path=self.setter('path'),
                           selection=self.setter('selection'))
         self.bind(view_mode=self.browser.setter('view_mode'),
                   multiselect=self.browser.setter('multiselect'),
-                  dirselect=self.browser.setter('dirselect'))
+                  dirselect=self.browser.setter('dirselect'),
+                  filters=self.browser.setter('filters'))
 
         lbl_path = Factory.XLabel(
             text=self.browser.path, valign='top', halign='left',
@@ -362,8 +368,12 @@ class XFolder(XFilePopup):
     def __init__(self, **kwargs):
         super(XFolder, self).__init__(**kwargs)
         # enabling the folder selection if multiselect is allowed
+        self.filters.append(self.is_dir)
         if self.multiselect:
             self.dirselect = True
+
+    def is_dir(self, directory, filename):
+        return path.isdir(path.join(directory, filename))
 
     def dismiss(self, *largs, **kwargs):
         """Pre-validation before closing.
