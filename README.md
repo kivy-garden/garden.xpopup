@@ -65,6 +65,12 @@ To see a demonstration, you need to perform one of the following:
 Version history
 ===============
 
+* 0.3.1
+
+    **XFilePopup.filters** - new property, binded to `kivy.uix.filechooser.FileChooser.filters`
+    
+    XFolder now shows only folders
+
 * 0.3.0
 
     Added support for localization. For more information, see `tools.py`.

@@ -50,6 +50,8 @@ files and folders, set :attr:`XFilePopup.dirselect` to True.
 To obtain selected files and/or folders you need just use
 :attr:`XFilePopup.selection`.
 
+You can add custom preview filters via :attr:`XFilePopup.filters`
+
 Following example shows how to use properties::
 
     def my_callback(instance):
@@ -368,12 +370,12 @@ class XFolder(XFilePopup):
     def __init__(self, **kwargs):
         super(XFolder, self).__init__(**kwargs)
         # enabling the folder selection if multiselect is allowed
-        self.filters.append(self.is_dir)
+        self.filters.append(self._is_dir)
         if self.multiselect:
             self.dirselect = True
 
-    def is_dir(self, directory, filename):
-        return path.isdir(path.join(directory, filename))
+    def _is_dir(self, directory, filename):
+        return self.browser.file_system.is_dir(path.join(directory, filename))
 
     def dismiss(self, *largs, **kwargs):
         """Pre-validation before closing.
